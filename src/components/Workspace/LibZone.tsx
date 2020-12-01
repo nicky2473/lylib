@@ -14,20 +14,20 @@ const Library = styled.div`
 `;
 
 const LibZone = () => {
-  const selectedPackages = useWorkspace((s) => s.selectedPackages);
-  const removePackage = useWorkspace((s) => s.removePackage);
+  const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
+  const removeLibrary = useWorkspace((s) => s.removeLibrary);
 
-  const renderPackages = () => {
-    return selectedPackages.map((elem, index) => {
+  const renderLibrarys = () => {
+    return selectedLibraries.map((elem, index) => {
       return (
-        <Library key={index} onClick={() => removePackage(elem)}>
+        <Library key={index} onClick={() => removeLibrary(elem)}>
           {elem}
         </Library>
       );
     });
   };
 
-  return <Container>{renderPackages()}</Container>;
+  return <Container>{renderLibrarys()}</Container>;
 };
 
 export default LibZone;

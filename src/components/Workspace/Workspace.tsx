@@ -57,7 +57,7 @@ const Package = styled.div`
 const Workspace = () => {
   const [isOpenResult, setIsOpenResult] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState([]);
-  const addPackage = useWorkspace((s) => s.addPackage);
+  const addLibrary = useWorkspace((s) => s.addLibrary);
 
   const debounced = useCallback(
     debounce(async (value: string) => {
@@ -84,7 +84,7 @@ const Workspace = () => {
 
   const clickPackage = (name: string) => {
     console.log(name);
-    addPackage(name);
+    addLibrary(name);
   };
 
   const renderResults = () => {
