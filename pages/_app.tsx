@@ -1,10 +1,14 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import Header from "components/common/Header";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  overflow: hidden;
+`;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Container>
       <Head>
         <title>LYLIB</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,7 +19,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <Header />
       <Component {...pageProps} />
 
       <style jsx global>{`
@@ -30,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           box-sizing: border-box;
         }
       `}</style>
-    </>
+    </Container>
   );
 }
 

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 
 const Container = styled.div`
   height: 600px;
-  border: solid 3px ${theme.primary};
+  border: solid 1px gray;
+  border-radius: 10px;
   margin-top: 50px;
   padding: 20px;
 `;

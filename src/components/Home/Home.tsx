@@ -4,6 +4,8 @@ import { useRef } from "react";
 import Button from "ui/Button";
 import theme from "ui/theme";
 import useMeasure from "react-use-measure";
+import mergeRefs from "react-merge-refs";
+import Header from "components/common/Header";
 
 const Container = styled.div`
   height: 100vh;
@@ -55,7 +57,8 @@ const ScrollButton = styled.div`
 
 const Home = () => {
   const workspaceRef = useRef<HTMLDivElement>(null);
-  const [containerRef, bounds] = useMeasure({ scroll: true });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [measureRef, bounds] = useMeasure({ scroll: true });
 
   const clickButtonToWorkspace = () => {
     if (!workspaceRef.current) return;
@@ -64,37 +67,42 @@ const Home = () => {
   };
 
   const clickButtonToTop = () => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
+    if (!containerRef.current) return;
+
+    containerRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <Container ref={containerRef}>
-      <Contents>
-        <Title>
-          <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
-        </Title>
-        <Description>
-          Search used libraries in your project, List, and Export
-        </Description>
-        <a style={{ textDecoration: "none" }} onClick={clickButtonToWorkspace}>
-          <Button>
-            <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Let's go make it!
-            </div>
-          </Button>
-        </a>
-      </Contents>
-      <div id="scroll-pin-workspace" ref={workspaceRef} />
-      <Workspace />
-      {bounds.top < 0 && (
-        <ScrollButton onClick={clickButtonToTop}>
-          <img src="/arrow-thin-up.svg" style={{ width: "15px" }} />
-        </ScrollButton>
-      )}
-    </Container>
+    <>
+      <Header clickTitle={clickButtonToTop} />
+      <Container ref={mergeRefs([measureRef, containerRef])}>
+        <Contents>
+          <Title>
+            <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
+          </Title>
+          <Description>
+            Search used libraries in your project, List, and Export
+          </Description>
+          <a
+            style={{ textDecoration: "none" }}
+            onClick={clickButtonToWorkspace}
+          >
+            <Button>
+              <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+                Let's go make it!
+              </div>
+            </Button>
+          </a>
+        </Contents>
+        <div id="scroll-pin-workspace" ref={workspaceRef} />
+        <Workspace />
+        {bounds.top < 0 && (
+          <ScrollButton onClick={clickButtonToTop}>
+            <img src="/common/arrow-thin-up.svg" style={{ width: "15px" }} />
+          </ScrollButton>
+        )}
+      </Container>
+    </>
   );
 };
 

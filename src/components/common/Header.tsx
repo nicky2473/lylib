@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
+import { FC } from "react";
 
 const Container = styled.div`
   position: fixed;
@@ -18,14 +19,11 @@ const Title = styled.div`
   cursor: pointer;
 `;
 
-const Header = () => {
-  const clickTitle = () => {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+interface Props {
+  clickTitle: () => void;
+}
 
+const Header: FC<Props> = ({ clickTitle }) => {
   return (
     <Container>
       <Title onClick={clickTitle}>LYLIB</Title>
