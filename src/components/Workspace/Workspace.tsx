@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, forwardRef, useCallback, useRef, useState } from "react";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import LibZone from "./LibZone";
@@ -120,4 +120,4 @@ const Workspace = () => {
   );
 };
 
-export default Workspace;
+export default forwardRef(Workspace);
