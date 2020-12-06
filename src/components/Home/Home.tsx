@@ -1,61 +1,109 @@
 import styled from "@emotion/styled";
-import Link from "next/link";
+import Workspace from "components/Workspace/Workspace";
+import { useRef } from "react";
 import Button from "ui/Button";
 import theme from "ui/theme";
-import Background from "./Background";
+import useMeasure from "react-use-measure";
+import mergeRefs from "react-merge-refs";
+import Header from "components/common/Header";
 
 const Container = styled.div`
-  height: 100%;
+  height: 100vh;
   position: relative;
+  background: url("/main_background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Contents = styled.div`
-  height: 100%;
+  height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  z-index: 1;
+  top: 120px;
 `;
 
 const Title = styled.div`
-  font-family: Nerko One;
-  font-size: 120px;
+  font-family: Permanent Marker;
+  font-size: 100px;
   margin-bottom: 20px;
 
   & > span {
-    font-weight: bold;
     color: ${theme.primary};
   }
 `;
 
 const Description = styled.div`
+  font-family: Shadows Into Light;
   font-size: 30px;
   margin-bottom: 40px;
 `;
 
-const Home = () => (
-  <Container>
-    <Contents>
-      <Title>
-        <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
-      </Title>
-      <Description>
-        Search used libraries in your project, and then Export
-      </Description>
-      <Link href="/workspace" passHref>
-        <a style={{ textDecoration: "none" }}>
-          <Button>
-            <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Go To Use
-            </div>
-          </Button>
-        </a>
-      </Link>
-    </Contents>
-    <Background />
-  </Container>
-);
+const ScrollButton = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  right: 30px;
+  bottom: 30px;
+  border-radius: 100%;
+  background-color: ${theme.primary};
+  cursor: pointer;
+`;
+
+const Home = () => {
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [measureRef, bounds] = useMeasure({ scroll: true });
+
+  const clickButtonToWorkspace = () => {
+    if (!workspaceRef.current) return;
+
+    workspaceRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const clickButtonToTop = () => {
+    if (!containerRef.current) return;
+
+    containerRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <>
+      <Header clickTitle={clickButtonToTop} />
+      <Container ref={mergeRefs([measureRef, containerRef])}>
+        <Contents>
+          <Title>
+            <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
+          </Title>
+          <Description>
+            Search used libraries in your project, List, and Export
+          </Description>
+          <a
+            style={{ textDecoration: "none" }}
+            onClick={clickButtonToWorkspace}
+          >
+            <Button>
+              <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+                Let's go make it!
+              </div>
+            </Button>
+          </a>
+        </Contents>
+        <div id="scroll-pin-workspace" ref={workspaceRef} />
+        <Workspace />
+        {bounds.top < 0 && (
+          <ScrollButton onClick={clickButtonToTop}>
+            <img src="/common/arrow-thin-up.svg" style={{ width: "15px" }} />
+          </ScrollButton>
+        )}
+      </Container>
+    </>
+  );
+};
 
 export default Home;
