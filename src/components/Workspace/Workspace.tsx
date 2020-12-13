@@ -4,7 +4,7 @@ import { ChangeEvent, forwardRef, useCallback, useRef, useState } from "react";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import LibZone from "./LibZone";
-import useWorkspace from "./Workspace.hooks";
+import useWorkspace, { Library } from "./Workspace.hooks";
 import theme from "ui/theme";
 
 const Container = styled.div`
@@ -81,7 +81,7 @@ const Package = styled.div`
 
 const Workspace = () => {
   const [isOpenResult, setIsOpenResult] = useState<boolean>(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(Array<Library>());
   const addLibrary = useWorkspace((s) => s.addLibrary);
   const ref = useRef<HTMLInputElement>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
@@ -90,15 +90,16 @@ const Workspace = () => {
     debounce(async (value: string) => {
       // https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md#get-v1search
       await axios
-        .get(`http://registry.npmjs.com/-/v1/search?text=${value}`)
+        .get(`https://api.github.com/repos/seungyoungYang/storage/contents/asset/logo/${value}.png`)
         .then(({ data }) => {
           console.log(data);
-          setSearchResults(data.objects);
-          if (data.objects.length === 0) setIsOpenResult(false);
-          else setIsOpenResult(true);
+          setIsOpenResult(true);
+          setSearchResults(Array<Library>(new Library(data.name, data.path)));
         })
         .catch((err) => {
           console.log(err);
+          setIsOpenResult(false);
+          setSearchResults(Array<Library>());
         });
     }, 200),
     []
@@ -109,8 +110,8 @@ const Workspace = () => {
     debounced(value);
   };
 
-  const clickPackage = (name: string) => {
-    addLibrary(name);
+  const clickPackage = (library: Library) => {
+    addLibrary(library);
   };
 
   const clickRemoveIcon = () => {
@@ -126,12 +127,12 @@ const Workspace = () => {
         <Package
           key={index}
           onPointerDown={() => {
-            clickPackage(result.package.name);
+            clickPackage(new Library(result.name, result.path));
             clickRemoveIcon();
           }}
         >
-          <div>{result.package.name}</div>
-          <div>{result.package.description}</div>
+          <img src={`https://raw.githubusercontent.com/SeungyoungYang/storage/master/${result.path}`} height="100" />
+          <div>{result.name}</div>
         </Package>
       );
     });
@@ -157,7 +158,7 @@ const Workspace = () => {
         )}
       </div>
       <LibZone />
-    </Container>
+    </Container >
   );
 };
 
