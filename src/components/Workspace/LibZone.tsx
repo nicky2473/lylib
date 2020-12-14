@@ -22,7 +22,6 @@ const LibZone = () => {
       return (
         <Library key={index} onClick={() => removeLibrary(elem.name)}>
           <img src={`https://raw.githubusercontent.com/SeungyoungYang/storage/master/${elem.path}`} height="100" />
-          {elem.name}
         </Library>
       );
     });

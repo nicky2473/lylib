@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import { ChangeEvent, forwardRef, useCallback, useRef, useState } from "react";
+import { ChangeEvent, forwardRef, useCallback, useRef, useState, useEffect } from "react";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import LibZone from "./LibZone";
@@ -80,34 +80,55 @@ const Package = styled.div`
 `;
 
 const Workspace = () => {
+  const [librarys, setLibrarys] = useState(Array<Library>());
   const [isOpenResult, setIsOpenResult] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState(Array<Library>());
   const addLibrary = useWorkspace((s) => s.addLibrary);
   const ref = useRef<HTMLInputElement>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
 
-  const debounced = useCallback(
-    debounce(async (value: string) => {
-      // https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md#get-v1search
-      await axios
-        .get(`https://api.github.com/repos/seungyoungYang/storage/contents/asset/logo/${value}.png`)
-        .then(({ data }) => {
-          console.log(data);
-          setIsOpenResult(true);
-          setSearchResults(Array<Library>(new Library(data.name, data.path)));
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsOpenResult(false);
-          setSearchResults(Array<Library>());
+  useEffect(() => {
+    const result = new Array<Library>()
+    axios
+      .get(`https://api.github.com/repos/seungyoungYang/storage/contents/asset/logo`)
+      .then(({ data }) => {
+        data.map((library: any) => {
+          result.push(new Library(library.name, library.path));
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLibrarys(Array<Library>());
+      });
+    setLibrarys(result);
+  }, []);
+
+  const debounced = useCallback(
+    debounce((librarys: Array<Library>, value: string) => {
+      setIsOpenResult(false);
+      setSearchResults(Array<Library>());
+
+      if (value === "") {
+        return
+      }
+
+      const filtered = librarys.filter((library) => {
+        if (library.name.match(value)) {
+          return true;
+        }
+      });
+
+      if (filtered.length > 0) {
+        setIsOpenResult(true);
+        setSearchResults(filtered);
+      }
     }, 200),
     []
   );
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    debounced(value);
+    debounced(librarys, value);
   };
 
   const clickPackage = (library: Library) => {
@@ -118,7 +139,7 @@ const Workspace = () => {
     if (!ref.current) return;
 
     ref.current.value = "";
-    debounced("");
+    debounced(librarys, "");
   };
 
   const renderResults = () => {
