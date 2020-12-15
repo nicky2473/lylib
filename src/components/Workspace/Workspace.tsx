@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import axios from "axios";
-import { ChangeEvent, forwardRef, useCallback, useRef, useState } from "react";
+import { ChangeEvent, forwardRef, useCallback, useRef, useState, useEffect } from "react";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import LibZone from "./LibZone";
-import useWorkspace from "./Workspace.hooks";
+import useWorkspace, { Library } from "./Workspace.hooks";
 import theme from "ui/theme";
 
 const Container = styled.div`
@@ -80,44 +80,66 @@ const Package = styled.div`
 `;
 
 const Workspace = () => {
+  const [librarys, setLibrarys] = useState(Array<Library>());
   const [isOpenResult, setIsOpenResult] = useState<boolean>(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(Array<Library>());
   const addLibrary = useWorkspace((s) => s.addLibrary);
   const ref = useRef<HTMLInputElement>(null);
   const searchResultsRef = useRef<HTMLDivElement>(null);
 
-  const debounced = useCallback(
-    debounce(async (value: string) => {
-      // https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md#get-v1search
-      await axios
-        .get(`http://registry.npmjs.com/-/v1/search?text=${value}`)
-        .then(({ data }) => {
-          console.log(data);
-          setSearchResults(data.objects);
-          if (data.objects.length === 0) setIsOpenResult(false);
-          else setIsOpenResult(true);
-        })
-        .catch((err) => {
-          console.log(err);
+  useEffect(() => {
+    const result = new Array<Library>()
+    axios
+      .get(`https://api.github.com/repos/seungyoungYang/storage/contents/asset/logo`)
+      .then(({ data }) => {
+        data.map((library: any) => {
+          result.push({ name: library.name, path: library.path });
         });
+      })
+      .catch((err) => {
+        console.log(err);
+        setLibrarys(Array<Library>());
+      });
+    setLibrarys(result);
+  }, []);
+
+  const debounced = useCallback(
+    debounce((librarys: Array<Library>, value: string) => {
+      setIsOpenResult(false);
+      setSearchResults(Array<Library>());
+
+      if (value === "") {
+        return
+      }
+
+      const filtered = librarys.filter((library) => {
+        if (library.name.match(value)) {
+          return true;
+        }
+      });
+
+      if (filtered.length > 0) {
+        setIsOpenResult(true);
+        setSearchResults(filtered);
+      }
     }, 200),
     []
   );
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    debounced(value);
+    debounced(librarys, value);
   };
 
-  const clickPackage = (name: string) => {
-    addLibrary(name);
+  const clickPackage = (library: Library) => {
+    addLibrary(library);
   };
 
   const clickRemoveIcon = () => {
     if (!ref.current) return;
 
     ref.current.value = "";
-    debounced("");
+    debounced(librarys, "");
   };
 
   const renderResults = () => {
@@ -126,12 +148,12 @@ const Workspace = () => {
         <Package
           key={index}
           onPointerDown={() => {
-            clickPackage(result.package.name);
+            clickPackage({ name: result.name, path: result.path });
             clickRemoveIcon();
           }}
         >
-          <div>{result.package.name}</div>
-          <div>{result.package.description}</div>
+          <img src={`https://raw.githubusercontent.com/SeungyoungYang/storage/master/${result.path}`} height="100" />
+          <div>{result.name}</div>
         </Package>
       );
     });
@@ -157,7 +179,7 @@ const Workspace = () => {
         )}
       </div>
       <LibZone />
-    </Container>
+    </Container >
   );
 };
 
