@@ -93,7 +93,7 @@ const Workspace = () => {
       .get(`https://api.github.com/repos/seungyoungYang/storage/contents/asset/logo`)
       .then(({ data }) => {
         data.map((library: any) => {
-          result.push(new Library(library.name, library.path));
+          result.push({ name: library.name, path: library.path });
         });
       })
       .catch((err) => {
@@ -148,7 +148,7 @@ const Workspace = () => {
         <Package
           key={index}
           onPointerDown={() => {
-            clickPackage(new Library(result.name, result.path));
+            clickPackage({ name: result.name, path: result.path });
             clickRemoveIcon();
           }}
         >

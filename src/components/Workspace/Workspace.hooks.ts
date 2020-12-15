@@ -7,14 +7,10 @@ type Store = {
   removeLibrary: (name: string) => void;
 };
 
-export class Library {
+export interface Library {
   name: string;
   path: string;
 
-  constructor(name: string, path: string) {
-    this.name = name;
-    this.path = path;
-  }
 }
 
 const useWorkspace = create<Store>((set) => ({
