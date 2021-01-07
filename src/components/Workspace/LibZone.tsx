@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { createRef, useMemo, useRef, useState } from "react";
+import SVG from "ui/svg/SVG";
 import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 
@@ -14,6 +14,7 @@ const Container = styled.div`
 
 const Contents = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const Library = styled.div`
@@ -25,10 +26,6 @@ const Library = styled.div`
   & > div:nth-of-type(1) {
     margin-right: 20px;
   }
-`;
-
-const Logo = styled.img`
-  height: 80px;
 `;
 
 const ExportButton = styled.div`
@@ -98,7 +95,7 @@ const LibZone = () => {
     <Container>
       <Contents>{renderLibraries()}</Contents>
       <ExportButton>
-        <img src="/common/export.svg" style={{ width: "45px" }} />
+        <SVG filename="common/export" width="45px" />
       </ExportButton>
     </Container>
   );

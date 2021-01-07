@@ -8,12 +8,15 @@ interface Library {
 
 type Store = {
   selectedLibraries: Library[];
+  optionVisible: boolean;
   addLibrary: (library: Library) => void;
   removeLibrary: (name: string) => void;
+  toggleOptionVisible: () => void;
 };
 
-const useWorkspace = create<Store>((set) => ({
+const useWorkspace = create<Store>((set, get) => ({
   selectedLibraries: [],
+  optionVisible: false,
   addLibrary: (library) =>
     set((state) =>
       produce(state, (draft) => {
@@ -33,6 +36,11 @@ const useWorkspace = create<Store>((set) => ({
         );
       })
     ),
+  toggleOptionVisible: () => {
+    const optionVisible = get().optionVisible;
+
+    set({ optionVisible: !optionVisible });
+  },
 }));
 
 export default useWorkspace;

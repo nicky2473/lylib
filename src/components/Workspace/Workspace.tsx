@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { forwardRef } from "react";
 import LibZone from "./LibZone";
+import Options from "./Options";
 import SearchArea from "./SearchArea";
 
 const Container = styled.div`
@@ -16,6 +17,7 @@ const Workspace = () => {
   return (
     <Container>
       <SearchArea />
+      <Options />
       <LibZone />
     </Container>
   );

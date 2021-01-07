@@ -5,15 +5,17 @@ import axios from "axios";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import useWorkspace from "./Workspace.hooks";
-import Button from "ui/Button";
+import SVG from "ui/svg/SVG";
 
 const Container = styled.div`
   display: flex;
 `;
 
 const Contents = styled.div`
+  display: flex;
   position: relative;
-  width: 100%;
+  flex: 1 0 auto;
+  margin-right: 40px;
 `;
 
 const Searchbar = styled.input`
@@ -33,9 +35,10 @@ const Searchbar = styled.input`
   }
 `;
 
-const SearchIcon = styled.img`
+const SearchIcon = styled.div`
   position: absolute;
   width: 24px;
+  height: 24px;
   top: 50%;
   left: 20px;
   transform: translateY(-50%);
@@ -53,13 +56,29 @@ const SearchResult = styled.div`
   z-index: 10;
 `;
 
-const RemoveIcon = styled.img`
+const RemoveIcon = styled.div`
   position: absolute;
   width: 20px;
+  height: 20px;
   top: 50%;
   left: calc(100% - 32px);
   transform: translate(-50%, -50%);
   cursor: pointer;
+`;
+
+const OptionIcon = styled.div`
+  position: relative;
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform ease 1.5s, color ease 1s;
+  cursor: pointer;
+
+  &[data-visible="true"] {
+    color: ${theme.primary};
+    transform: translateY(-50%) rotate(45deg);
+  }
 `;
 
 const Package = styled.div`
@@ -86,6 +105,8 @@ const SearchArea = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLInputElement>(null);
   const addLibrary = useWorkspace((s) => s.addLibrary);
+  const optionVisible = useWorkspace((s) => s.optionVisible);
+  const toggleOptionVisible = useWorkspace((s) => s.toggleOptionVisible);
 
   const clickPackage = (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -153,7 +174,9 @@ const SearchArea = () => {
   return (
     <Container>
       <Contents>
-        <SearchIcon src="/common/search.svg" />
+        <SearchIcon>
+          <SVG filename="common/search" />
+        </SearchIcon>
         <Searchbar
           ref={ref}
           type="text"
@@ -164,11 +187,16 @@ const SearchArea = () => {
           }}
           onBlur={() => setIsOpenResult(false)}
         />
-        <RemoveIcon src="/common/close.svg" onClick={clickRemoveIcon} />
+        <RemoveIcon onClick={clickRemoveIcon}>
+          <SVG filename="common/close" />
+        </RemoveIcon>
         {isOpenResult && searchResults.length > 0 && (
           <SearchResult ref={searchResultsRef}>{renderResults()}</SearchResult>
         )}
       </Contents>
+      <OptionIcon onClick={toggleOptionVisible} data-visible={optionVisible}>
+        <SVG filename="common/option" />
+      </OptionIcon>
     </Container>
   );
 };
