@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { createRef, useMemo, useRef, useState } from "react";
+import SVG from "ui/svg/SVG";
 import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 
@@ -8,12 +8,12 @@ const Container = styled.div`
   height: 600px;
   border: solid 1px gray;
   border-radius: 10px;
-  margin-top: 50px;
   padding: 20px;
 `;
 
 const Contents = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const Library = styled.div`
@@ -25,10 +25,6 @@ const Library = styled.div`
   & > div:nth-of-type(1) {
     margin-right: 20px;
   }
-`;
-
-const Logo = styled.img`
-  height: 80px;
 `;
 
 const ExportButton = styled.div`
@@ -64,6 +60,9 @@ const Text = styled.div`
 const LibZone = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
+  const printLibraryName = useWorkspace((s) => s.printLibraryName);
+  const printLibraryOwner = useWorkspace((s) => s.printLibraryOwner);
+  const printLibraryIcon = useWorkspace((s) => s.printLibraryIcon);
 
   const renderLibraries = () => {
     return selectedLibraries.map((elem, index) => {
@@ -85,10 +84,16 @@ const LibZone = () => {
               e.target.style.display = "none";
             }}
           /> */}
-          <NoProfile color={elem.color} textColor={textColor}>
-            {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
-          </NoProfile>
-          <Text>{elem.name.split("/")[1]}</Text>
+          {printLibraryIcon && (
+            <NoProfile color={elem.color} textColor={textColor}>
+              {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
+            </NoProfile>
+          )}
+          {printLibraryName && (
+            <Text>
+              {printLibraryOwner ? elem.name : elem.name.split("/")[1]}
+            </Text>
+          )}
         </Library>
       );
     });
@@ -98,7 +103,7 @@ const LibZone = () => {
     <Container>
       <Contents>{renderLibraries()}</Contents>
       <ExportButton>
-        <img src="/common/export.svg" style={{ width: "45px" }} />
+        <SVG filename="common/export" width="45px" />
       </ExportButton>
     </Container>
   );

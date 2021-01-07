@@ -6,6 +6,7 @@ import theme from "ui/theme";
 import useMeasure from "react-use-measure";
 import mergeRefs from "react-merge-refs";
 import Header from "components/common/Header";
+import SVG from "ui/svg/SVG";
 
 const Container = styled.div`
   height: 100vh;
@@ -98,7 +99,7 @@ const Home = () => {
         <Workspace />
         {bounds.top < 0 && (
           <ScrollButton onClick={clickButtonToTop}>
-            <img src="/common/arrow-thin-up.svg" style={{ width: "15px" }} />
+            <SVG filename="common/arrow-thin-up" width="15px" />
           </ScrollButton>
         )}
       </Container>
