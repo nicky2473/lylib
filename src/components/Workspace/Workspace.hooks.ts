@@ -1,19 +1,26 @@
 import produce from "immer";
 import create from "zustand";
 
+interface Library {
+  name: string;
+  color: string;
+}
+
 type Store = {
-  selectedLibraries: string[];
-  addLibrary: (name: string) => void;
+  selectedLibraries: Library[];
+  addLibrary: (library: Library) => void;
   removeLibrary: (name: string) => void;
 };
 
 const useWorkspace = create<Store>((set) => ({
   selectedLibraries: [],
-  addLibrary: (name) =>
+  addLibrary: (library) =>
     set((state) =>
       produce(state, (draft) => {
-        if (!draft.selectedLibraries.find((elem) => elem === name)) {
-          draft.selectedLibraries.push(name);
+        if (
+          !draft.selectedLibraries.find((elem) => elem.name === library.name)
+        ) {
+          draft.selectedLibraries.push(library);
         }
       })
     ),
@@ -21,7 +28,7 @@ const useWorkspace = create<Store>((set) => ({
     set((state) =>
       produce(state, (draft) => {
         draft.selectedLibraries.splice(
-          draft.selectedLibraries.findIndex((elem) => elem === name),
+          draft.selectedLibraries.findIndex((elem) => elem.name === name),
           1
         );
       })
