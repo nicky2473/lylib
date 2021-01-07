@@ -49,6 +49,7 @@ const SearchResult = styled.div`
   width: 100%;
   height: auto;
   max-height: 400px;
+  top: 50px;
   background-color: white;
   border: solid 1px ${theme.primary};
   border-top: 0;

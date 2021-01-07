@@ -11,6 +11,10 @@ const Container = styled.div`
   justify-content: center;
   height: 100%;
   padding: 0 100px;
+
+  & > div {
+    margin: 10px 0;
+  }
 `;
 
 const Workspace = () => {

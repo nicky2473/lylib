@@ -8,7 +8,6 @@ const Container = styled.div`
   height: 600px;
   border: solid 1px gray;
   border-radius: 10px;
-  margin-top: 50px;
   padding: 20px;
 `;
 
@@ -61,6 +60,9 @@ const Text = styled.div`
 const LibZone = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
+  const printLibraryName = useWorkspace((s) => s.printLibraryName);
+  const printLibraryOwner = useWorkspace((s) => s.printLibraryOwner);
+  const printLibraryIcon = useWorkspace((s) => s.printLibraryIcon);
 
   const renderLibraries = () => {
     return selectedLibraries.map((elem, index) => {
@@ -82,10 +84,16 @@ const LibZone = () => {
               e.target.style.display = "none";
             }}
           /> */}
-          <NoProfile color={elem.color} textColor={textColor}>
-            {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
-          </NoProfile>
-          <Text>{elem.name.split("/")[1]}</Text>
+          {printLibraryIcon && (
+            <NoProfile color={elem.color} textColor={textColor}>
+              {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
+            </NoProfile>
+          )}
+          {printLibraryName && (
+            <Text>
+              {printLibraryOwner ? elem.name : elem.name.split("/")[1]}
+            </Text>
+          )}
         </Library>
       );
     });
