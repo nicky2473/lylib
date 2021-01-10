@@ -10,7 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding: 0 100px;
+  padding: 100px;
 
   & > div {
     margin: 10px 0;
