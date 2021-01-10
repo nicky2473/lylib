@@ -1,3 +1,4 @@
-const primary = "#f9a726";
+const primary = "#F29F05";
+const variant = "#039686";
 
-export default { primary };
+export default { primary, variant };

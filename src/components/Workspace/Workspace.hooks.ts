@@ -6,14 +6,14 @@ interface Library {
   color: string;
 }
 
-type Option = "printLibraryName" | "printLibraryOwner" | "printLibraryIcon";
+type Option = "libraryName" | "libraryOwner" | "libraryIcon";
 
 type Store = {
   selectedLibraries: Library[];
   optionVisible: boolean;
-  printLibraryName: boolean;
-  printLibraryOwner: boolean;
-  printLibraryIcon: boolean;
+  options: {
+    [key in Option]: boolean;
+  };
   addLibrary: (library: Library) => void;
   removeLibrary: (name: string) => void;
   toggleOptionVisible: () => void;
@@ -23,9 +23,11 @@ type Store = {
 const useWorkspace = create<Store>((set, get) => ({
   selectedLibraries: [],
   optionVisible: false,
-  printLibraryName: true,
-  printLibraryOwner: false,
-  printLibraryIcon: true,
+  options: {
+    libraryName: true,
+    libraryOwner: false,
+    libraryIcon: true,
+  },
   addLibrary: (library) =>
     set((state) =>
       produce(state, (draft) => {
@@ -46,7 +48,12 @@ const useWorkspace = create<Store>((set, get) => ({
       })
     ),
   toggleOptionVisible: () => set({ optionVisible: !get().optionVisible }),
-  toggleOption: (target) => set({ [target]: !get()[target] }),
+  toggleOption: (target) =>
+    set((state) =>
+      produce(state, (draft) => {
+        draft.options[target] = !get().options[target];
+      })
+    ),
 }));
 
 export default useWorkspace;

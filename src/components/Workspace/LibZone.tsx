@@ -2,13 +2,20 @@ import styled from "@emotion/styled";
 import SVG from "ui/svg/SVG";
 import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
+import html2canvas from "html2canvas";
+import { useRef } from "react";
 
 const Container = styled.div`
   position: relative;
-  height: 600px;
+  flex: 1 0 auto;
   border: solid 1px gray;
   border-radius: 10px;
   padding: 20px;
+  overflow: auto;
+`;
+
+const DownloadArea = styled.div`
+  height: 100%;
 `;
 
 const Contents = styled.div`
@@ -37,7 +44,7 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${theme.primary};
+  background-color: ${theme.variant};
   cursor: pointer;
 `;
 
@@ -60,9 +67,32 @@ const Text = styled.div`
 const LibZone = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
-  const printLibraryName = useWorkspace((s) => s.printLibraryName);
-  const printLibraryOwner = useWorkspace((s) => s.printLibraryOwner);
-  const printLibraryIcon = useWorkspace((s) => s.printLibraryIcon);
+  const options = useWorkspace((s) => s.options);
+  const downloadRef = useRef<HTMLDivElement>(null);
+
+  const saveAs = (uri: string, filename: string) => {
+    const link = document.createElement("a");
+
+    if (typeof link.download === "string") {
+      link.href = uri;
+      link.download = filename;
+
+      document.body.appendChild(link);
+
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      window.open(uri);
+    }
+  };
+
+  const downloadPng = () => {
+    if (!downloadRef.current) return;
+
+    html2canvas(downloadRef.current).then((canvas) => {
+      saveAs(canvas.toDataURL(), "lylib.png");
+    });
+  };
 
   const renderLibraries = () => {
     return selectedLibraries.map((elem, index) => {
@@ -84,14 +114,14 @@ const LibZone = () => {
               e.target.style.display = "none";
             }}
           /> */}
-          {printLibraryIcon && (
+          {options.libraryIcon && (
             <NoProfile color={elem.color} textColor={textColor}>
               {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
             </NoProfile>
           )}
-          {printLibraryName && (
+          {options.libraryName && (
             <Text>
-              {printLibraryOwner ? elem.name : elem.name.split("/")[1]}
+              {options.libraryOwner ? elem.name : elem.name.split("/")[1]}
             </Text>
           )}
         </Library>
@@ -101,10 +131,12 @@ const LibZone = () => {
 
   return (
     <Container>
-      <Contents>{renderLibraries()}</Contents>
-      <ExportButton>
-        <SVG filename="common/export" width="45px" />
-      </ExportButton>
+      <DownloadArea ref={downloadRef}>
+        <Contents>{renderLibraries()}</Contents>
+        <ExportButton onClick={downloadPng} data-html2canvas-ignore>
+          <SVG filename="common/export" width="45px" />
+        </ExportButton>
+      </DownloadArea>
     </Container>
   );
 };
