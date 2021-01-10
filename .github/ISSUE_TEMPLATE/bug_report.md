@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---
@@ -15,18 +15,23 @@ assignees: ''
 ### 발생 상황 및 빈도
 
 ### 예상되는 정상 작동 시나리오
+**상황:**
+- [e.g. After click export file button]
+
+**빈도:**
+- [e.g. Always]
 
 ### 환경
 **Desktop:**
  - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+ - Browser: [e.g. chrome, safari]
+ - Version: [e.g. 22]
 
 **Smartphone:**
  - Device: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+ - Browser: [e.g. stock browser, safari]
+ - Version: [e.g. 22]
 
 ## 참고자료 (e.g. Screenshot, Logs, ...)
 

@@ -2,7 +2,7 @@
 name: Get to work
 about: Start the task (e.g. features, bugs, ...)
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
