@@ -4,25 +4,23 @@ import create from "zustand";
 interface Library {
   name: string;
   color: string;
+  fullPath: string;
 }
 
 type Option = "libraryName" | "libraryOwner" | "libraryIcon";
 
 type Store = {
   selectedLibraries: Library[];
-  optionVisible: boolean;
   options: {
     [key in Option]: boolean;
   };
   addLibrary: (library: Library) => void;
   removeLibrary: (name: string) => void;
-  toggleOptionVisible: () => void;
   toggleOption: (target: Option) => void;
 };
 
 const useWorkspace = create<Store>((set, get) => ({
   selectedLibraries: [],
-  optionVisible: false,
   options: {
     libraryName: true,
     libraryOwner: false,
@@ -47,7 +45,6 @@ const useWorkspace = create<Store>((set, get) => ({
         );
       })
     ),
-  toggleOptionVisible: () => set({ optionVisible: !get().optionVisible }),
   toggleOption: (target) =>
     set((state) =>
       produce(state, (draft) => {

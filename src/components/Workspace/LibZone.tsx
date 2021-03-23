@@ -28,10 +28,6 @@ const Library = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 20px;
-
-  & > div:nth-of-type(1) {
-    margin-right: 20px;
-  }
 `;
 
 const ExportButton = styled.div`
@@ -48,12 +44,18 @@ const ExportButton = styled.div`
   cursor: pointer;
 `;
 
+const Icon = styled.img`
+  height: 60px;
+  margin-right: 20px;
+`;
+
 const NoProfile = styled.div<{ color: string; textColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
   border-radius: 100%;
   background-color: ${(props) => props.color};
   color: ${(props) => props.textColor};
@@ -104,17 +106,11 @@ const LibZone = () => {
       const textColor =
         r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "black" : "white";
 
-      // const filename = elem.name.replace("/", "-");
-
       return (
         <Library key={index} onClick={() => removeLibrary(elem.name)}>
-          {/* <Logo
-            src={`libicons/${filename}.png`}
-            onError={(e) => {
-              e.target.style.display = "none";
-            }}
-          /> */}
-          {options.libraryIcon && (
+          {options.libraryIcon && elem.fullPath ? (
+            <Icon src={elem.fullPath} />
+          ) : (
             <NoProfile color={elem.color} textColor={textColor}>
               {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
             </NoProfile>

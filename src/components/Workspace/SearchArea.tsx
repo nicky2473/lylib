@@ -6,6 +6,9 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import useWorkspace from "./Workspace.hooks";
 import SVG from "ui/svg/SVG";
+import firebase from "firebase/app";
+
+import "firebase/storage";
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +18,6 @@ const Contents = styled.div`
   display: flex;
   position: relative;
   flex: 1 0 auto;
-  margin-right: 40px;
 `;
 
 const Searchbar = styled.input`
@@ -27,7 +29,7 @@ const Searchbar = styled.input`
   border-radius: 30px;
   &:focus {
     outline: none;
-    border-color: ${theme.primary};
+    border-color: ${theme.variant};
     border-radius: 30px;
   }
   &[data-have="true"] {
@@ -51,7 +53,7 @@ const SearchResult = styled.div`
   max-height: 400px;
   top: 50px;
   background-color: white;
-  border: solid 1px ${theme.primary};
+  border: solid 1px ${theme.variant};
   border-top: 0;
   overflow: auto;
   z-index: 10;
@@ -65,21 +67,6 @@ const RemoveIcon = styled.div`
   left: calc(100% - 32px);
   transform: translate(-50%, -50%);
   cursor: pointer;
-`;
-
-const OptionIcon = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: transform ease 1.5s, color ease 1s;
-  cursor: pointer;
-
-  &[data-visible="true"] {
-    color: ${theme.primary};
-    transform: translateY(-50%) rotate(45deg);
-  }
 `;
 
 const Package = styled.div`
@@ -106,13 +93,24 @@ const SearchArea = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLInputElement>(null);
   const addLibrary = useWorkspace((s) => s.addLibrary);
-  const optionVisible = useWorkspace((s) => s.optionVisible);
-  const toggleOptionVisible = useWorkspace((s) => s.toggleOptionVisible);
+  const storageRef = firebase.storage().ref();
 
-  const clickPackage = (name: string) => {
+  const clickPackage = async (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    const filename = name.replace("/", "-");
+    const imageRef = storageRef.child(`logos/${filename}.png`);
 
-    addLibrary({ name, color });
+    let fullPath = "";
+    await imageRef
+      .getDownloadURL()
+      .then((url) => {
+        fullPath = url;
+      })
+      .catch(() => {
+        fullPath = "";
+      });
+
+    addLibrary({ name, color, fullPath });
   };
 
   const clickRemoveIcon = () => {
@@ -195,9 +193,6 @@ const SearchArea = () => {
           <SearchResult ref={searchResultsRef}>{renderResults()}</SearchResult>
         )}
       </Contents>
-      <OptionIcon onClick={toggleOptionVisible} data-visible={optionVisible}>
-        <SVG filename="common/option" />
-      </OptionIcon>
     </Container>
   );
 };
