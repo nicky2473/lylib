@@ -104,7 +104,7 @@ const LibZone = () => {
       const textColor =
         r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "black" : "white";
 
-      const filename = elem.name.replace("/", "-");
+      // const filename = elem.name.replace("/", "-");
 
       return (
         <Library key={index} onClick={() => removeLibrary(elem.name)}>

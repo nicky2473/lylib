@@ -1,12 +1,32 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import styled from "@emotion/styled";
+import firebase from "firebase/app";
+
+import "firebase/analytics";
+import "firebase/auth";
+import "firebase/firestore";
 
 const Container = styled.div`
   overflow: hidden;
 `;
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUPLz7pmr1kFPDhVjzocgeVHh6l007MtA",
+    authDomain: "lylib-34128.firebaseapp.com",
+    projectId: "lylib-34128",
+    storageBucket: "lylib-34128.appspot.com",
+    messagingSenderId: "831442574699",
+    appId: "1:831442574699:web:ea0455f1b3719d2cb1802e",
+    measurementId: "G-CPGFFGMJ2C",
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  }
+
   return (
     <Container>
       <Head>
