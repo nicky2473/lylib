@@ -21,7 +21,7 @@ const Title = styled.div`
 const Header = () => {
   return (
     <Container>
-      <Link href="#home">
+      <Link href="/">
         <Title>LYLIB</Title>
       </Link>
       <Link href="https://github.com/Junho-Cho/lylib" passHref>

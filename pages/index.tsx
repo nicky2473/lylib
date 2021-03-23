@@ -1,7 +1,7 @@
-import dynamic from "next/dynamic";
+import Home from "components/Home/Home";
 
-const Page = dynamic(() => import("components/Home/Home"), {
-  ssr: false,
-});
+const Page = () => {
+  return <Home />;
+};
 
 export default Page;
