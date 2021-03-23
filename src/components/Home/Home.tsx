@@ -1,107 +1,110 @@
-import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import Footer from "components/common/Footer";
-import Header from "components/common/Header";
+import Workspace from "components/Workspace/Workspace";
+import { useRef } from "react";
 import Button from "ui/Button";
 import theme from "ui/theme";
-
-interface AnimationProps {
-  top: number;
-  delay?: number;
-}
-
-const moveImage = (top: number) => keyframes`
-  from {
-    opacity: 0;
-    top: ${top + 6}%
-  }
-  to {
-    opacity: 1;
-    top: ${top}%
-  }
-`;
+import useMeasure from "react-use-measure";
+import mergeRefs from "react-merge-refs";
+import Header from "components/common/Header";
+import SVG from "ui/svg/SVG";
 
 const Container = styled.div`
   height: 100vh;
   position: relative;
-  display: flex;
-  flex-direction: column;
+  background: url("/main_background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Contents = styled.div`
+  height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
-  justify-content: center;
   align-items: center;
-  z-index: 1;
+  top: 120px;
 `;
 
 const Title = styled.div`
-  font-family: Nerko One;
-  font-size: 120px;
+  font-family: Permanent Marker;
+  font-size: 100px;
   margin-bottom: 20px;
 
   & > span {
-    font-weight: bold;
     color: ${theme.primary};
   }
 `;
 
 const Description = styled.div`
+  font-family: Shadows Into Light;
   font-size: 30px;
   margin-bottom: 40px;
 `;
 
-const BackgroundImage = styled.img`
-  position: absolute;
-  padding: 40px;
-  border: solid 1px #b5b5b5;
-  animation: ${({ top }: AnimationProps) => moveImage(top)} 1s ease-out
-    ${({ delay }: AnimationProps) => delay || 0}s;
+const ScrollButton = styled.div`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  right: 30px;
+  bottom: 30px;
+  border-radius: 100%;
+  background-color: ${theme.primary};
+  cursor: pointer;
 `;
 
-const Home = () => (
-  <Container>
-    <Header />
-    <Contents>
-      <Title>
-        <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
-      </Title>
-      <Description>
-        Search used libraries in your project, and then Export
-      </Description>
-      <Button>
-        <div style={{ fontSize: "20px", fontWeight: "bold" }}>Go To Use</div>
-      </Button>
-    </Contents>
-    <Footer />
-    <BackgroundImage
-      src="/image_main.svg"
-      top={20}
-      style={{
-        width: "400px",
-        transform: "rotate(20deg)",
-        right: "10%",
-        top: "20%",
-        boxShadow: "20px 20px 25px 0 rgba(64, 67, 83, 0.4)",
-      }}
-    />
-    <BackgroundImage
-      src="/image_main_2.svg"
-      top={50}
-      delay={0.5}
-      style={{
-        opacity: 0,
-        width: "350px",
-        transform: "rotate(-30deg)",
-        left: "10%",
-        top: "45%",
-        boxShadow: "-20px 20px 25px 0 rgba(64, 67, 83, 0.4)",
-        animationFillMode: "forwards",
-      }}
-    />
-  </Container>
-);
+const Home = () => {
+  const workspaceRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [measureRef, bounds] = useMeasure({ scroll: true });
+
+  const clickButtonToWorkspace = () => {
+    if (!workspaceRef.current) return;
+
+    workspaceRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const clickButtonToTop = () => {
+    if (!containerRef.current) return;
+
+    containerRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  return (
+    <>
+      <Header clickTitle={clickButtonToTop} />
+      <Container ref={mergeRefs([measureRef, containerRef])}>
+        <Contents>
+          <Title>
+            <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
+          </Title>
+          <Description>
+            Search used libraries in your project, List, and Export
+          </Description>
+          <a
+            style={{ textDecoration: "none" }}
+            onClick={clickButtonToWorkspace}
+          >
+            <Button>
+              <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+                Let's go make it!
+              </div>
+            </Button>
+          </a>
+        </Contents>
+        <div id="scroll-pin-workspace" ref={workspaceRef} />
+        <Workspace />
+        {bounds.top < 0 && (
+          <ScrollButton onClick={clickButtonToTop}>
+            <SVG filename="common/arrow-thin-up" width="15px" />
+          </ScrollButton>
+        )}
+      </Container>
+    </>
+  );
+};
 
 export default Home;
