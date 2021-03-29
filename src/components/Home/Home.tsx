@@ -20,6 +20,10 @@ const Contents = styled.div`
 const Title = styled.div`
   font-size: 120px;
   pointer-events: none;
+
+  > div {
+    position: relative;
+  }
 `;
 
 const Button = styled.div`
@@ -27,6 +31,22 @@ const Button = styled.div`
   font-size: 50px;
   margin-top: 40px;
   cursor: pointer;
+
+  :hover {
+    color: white;
+  }
+`;
+
+const Box = styled.span<{ width }>`
+  :before {
+    content: "";
+    position: absolute;
+    width: ${(props) => props.width + "px"};
+    height: 30px;
+    background-color: white;
+    bottom: 20px;
+    z-index: -1;
+  }
 `;
 
 const Home = () => {
@@ -34,11 +54,15 @@ const Home = () => {
     <Container>
       <Contents>
         <Title>
-          LIST
-          <br />
-          YOUR
-          <br />
-          LIBRARIES
+          <div>
+            <Box width={70}>L</Box>IST
+          </div>
+          <div>
+            <Box width={70}>Y</Box>OUR
+          </div>
+          <div>
+            <Box width={175}>LIB</Box>RARIES
+          </div>
         </Title>
         <Link href="/workspace">
           <Button>{`-> Go to workspace`}</Button>

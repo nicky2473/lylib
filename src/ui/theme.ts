@@ -4,9 +4,6 @@ const colors = {
     light: "#ffd049",
     dark: "#ba7100",
   },
-  accent: {
-    original: "#774F38",
-  },
 } as const;
 
 export default colors;
