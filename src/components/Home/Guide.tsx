@@ -32,13 +32,13 @@ const Guide = () => {
     <Container>
       <GuideText>
         <div>
-          <Keyboard>P</Keyboard>ause
+          <Keyboard>P</Keyboard>ause auto mode
         </div>
         <div>
-          <Keyboard>S</Keyboard>witch mode
+          <Keyboard>S</Keyboard>witch interactive mode
         </div>
         <div>
-          <Keyboard>R</Keyboard>eset
+          <Keyboard>R</Keyboard>eset cubes
         </div>
       </GuideText>
     </Container>

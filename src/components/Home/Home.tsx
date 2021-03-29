@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
+import colors from "ui/theme";
 import Guide from "./Guide";
 import InteractiveCubes from "./InteractiveCubes";
 
 const Container = styled.div`
   height: 100vh;
+  background-color: ${colors.primary.original};
 `;
 
 const Contents = styled.div`
@@ -17,9 +19,10 @@ const Contents = styled.div`
 
 const Title = styled.div`
   font-size: 120px;
+  pointer-events: none;
 `;
 
-const Description = styled.div`
+const Button = styled.div`
   font-family: Shadows Into Light;
   font-size: 50px;
   margin-top: 40px;
@@ -38,7 +41,7 @@ const Home = () => {
           LIBRARIES
         </Title>
         <Link href="/workspace">
-          <Description> {`-> Go to workspace`}</Description>
+          <Button>{`-> Go to workspace`}</Button>
         </Link>
       </Contents>
       <Guide />

@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import colors from "ui/theme";
 import LibZone from "./LibZone";
 import Options from "./Options";
 import SearchArea from "./SearchArea";
@@ -10,6 +11,7 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   padding: 100px;
+  background-color: ${colors.primary.original};
 
   & > div {
     margin: 10px 0;
@@ -18,13 +20,11 @@ const Container = styled.div`
 
 const Workspace = () => {
   return (
-    <>
-      <Container>
-        <SearchArea />
-        <Options />
-        <LibZone />
-      </Container>
-    </>
+    <Container>
+      <SearchArea />
+      <Options />
+      <LibZone />
+    </Container>
   );
 };
 
