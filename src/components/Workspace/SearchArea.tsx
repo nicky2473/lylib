@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
-import theme from "ui/theme";
+import colors from "ui/theme";
 import axios from "axios";
 // @ts-ignore
 import debounce from "lodash/debounce";
@@ -27,7 +27,7 @@ const Searchbar = styled.input`
   border-radius: 30px;
   &:focus {
     outline: none;
-    border-color: ${theme.primary};
+    border-color: ${colors.primary.original};
     border-radius: 30px;
   }
   &[data-have="true"] {
@@ -51,7 +51,7 @@ const SearchResult = styled.div`
   max-height: 400px;
   top: 50px;
   background-color: white;
-  border: solid 1px ${theme.primary};
+  border: solid 1px ${colors.primary.original};
   border-top: 0;
   overflow: auto;
   z-index: 10;

@@ -1,67 +1,48 @@
 import styled from "@emotion/styled";
-import Button from "ui/Button";
-import theme from "ui/theme";
-import Header from "components/common/Header";
 import Link from "next/link";
+import Guide from "./Guide";
+import InteractiveCubes from "./InteractiveCubes";
 
 const Container = styled.div`
   height: 100vh;
-  position: relative;
-  background: url("/main_background.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 `;
 
 const Contents = styled.div`
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  top: 120px;
+  position: absolute;
+  top: 20%;
+  left: 100px;
+  z-index: 10;
 `;
 
 const Title = styled.div`
-  font-family: Permanent Marker;
-  font-size: 100px;
-  margin-bottom: 20px;
-
-  & > span {
-    color: ${theme.primary};
-  }
+  font-size: 120px;
 `;
 
 const Description = styled.div`
   font-family: Shadows Into Light;
-  font-size: 30px;
-  margin-bottom: 40px;
+  font-size: 50px;
+  margin-top: 40px;
+  cursor: pointer;
 `;
 
 const Home = () => {
   return (
-    <>
-      <Header />
-      <Container>
-        <Contents>
-          <Title>
-            <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
-          </Title>
-          <Description>
-            Search used libraries in your project, List, and Export
-          </Description>
-          <Link href="/workspace">
-            <a style={{ textDecoration: "none" }}>
-              <Button>
-                <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-                  Go to workspace
-                </div>
-              </Button>
-            </a>
-          </Link>
-        </Contents>
-      </Container>
-    </>
+    <Container>
+      <Contents>
+        <Title>
+          LIST
+          <br />
+          YOUR
+          <br />
+          LIBRARIES
+        </Title>
+        <Link href="/workspace">
+          <Description> {`-> Go to workspace`}</Description>
+        </Link>
+      </Contents>
+      <Guide />
+      <InteractiveCubes />
+    </Container>
   );
 };
 

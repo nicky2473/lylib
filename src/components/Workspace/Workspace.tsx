@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import Header from "components/common/Header";
 import LibZone from "./LibZone";
 import Options from "./Options";
 import SearchArea from "./SearchArea";
@@ -20,7 +19,6 @@ const Container = styled.div`
 const Workspace = () => {
   return (
     <>
-      <Header />
       <Container>
         <SearchArea />
         <Options />
