@@ -3,7 +3,7 @@ import SVG from "ui/svg/SVG";
 import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 import html2canvas from "html2canvas";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 const Container = styled.div`
   position: relative;
