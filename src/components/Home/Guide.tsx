@@ -1,10 +1,6 @@
 import styled from "@emotion/styled";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
   position: absolute;
   bottom: 60px;
   right: 60px;
@@ -12,31 +8,38 @@ const Container = styled.div`
 `;
 
 const GuideText = styled.div`
-  > span {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    color: red;
-    opacity: 0.5;
-    text-align: center;
-    font-weight: bold;
-    border: solid 0.5px #757575;
-    border-radius: 6px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+`;
+
+const Keyboard = styled.span`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  color: red;
+  opacity: 0.5;
+  text-align: center;
+  font-weight: bold;
+  border: solid 0.5px #757575;
+  border-radius: 6px;
 `;
 
 const Guide = () => {
   return (
     <Container>
       <GuideText>
-        <span>P</span>ause
-      </GuideText>
-      <GuideText>
-        <span>S</span>witch mode
-      </GuideText>
-      <GuideText>
-        <span>R</span>eset
+        <div>
+          <Keyboard>P</Keyboard>ause
+        </div>
+        <div>
+          <Keyboard>S</Keyboard>witch mode
+        </div>
+        <div>
+          <Keyboard>R</Keyboard>eset
+        </div>
       </GuideText>
     </Container>
   );

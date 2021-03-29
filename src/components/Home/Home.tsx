@@ -9,7 +9,8 @@ const Container = styled.div`
 
 const Contents = styled.div`
   position: absolute;
-  top: 20%;
+  top: 50%;
+  transform: translateY(-50%);
   left: 100px;
   z-index: 10;
 `;
