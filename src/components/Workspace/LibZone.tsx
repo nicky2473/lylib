@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import SVG from "ui/svg/SVG";
-import theme from "ui/theme";
+import colors from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
@@ -40,7 +40,7 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${theme.primary};
+  background-color: ${colors.primary.original};
   cursor: pointer;
 `;
 
