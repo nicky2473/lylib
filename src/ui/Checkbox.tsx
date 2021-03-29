@@ -20,7 +20,7 @@ const Contents = styled.div`
     width: 15px;
     height: 15px;
     border-radius: 2px;
-    border: solid 1.5px ${theme.variant};
+    border: solid 1.5px ${theme.primary};
     background-color: white;
     position: absolute;
     left: 0;
@@ -33,7 +33,7 @@ const Contents = styled.div`
     justify-content: center;
     font-size: 12px;
     color: white;
-    background-color: ${theme.variant};
+    background-color: ${theme.primary};
   }
 `;
 

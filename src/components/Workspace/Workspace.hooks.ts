@@ -29,11 +29,8 @@ const useWorkspace = create<Store>((set, get) => ({
   addLibrary: (library) =>
     set((state) =>
       produce(state, (draft) => {
-        if (
-          !draft.selectedLibraries.find((elem) => elem.name === library.name)
-        ) {
+        if (!draft.selectedLibraries.find((elem) => elem.name === library.name))
           draft.selectedLibraries.push(library);
-        }
       })
     ),
   removeLibrary: (name) =>

@@ -3,7 +3,7 @@ import SVG from "ui/svg/SVG";
 import theme from "ui/theme";
 import useWorkspace from "./Workspace.hooks";
 import html2canvas from "html2canvas";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Container = styled.div`
   position: relative;
@@ -40,7 +40,7 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${theme.variant};
+  background-color: ${theme.primary};
   cursor: pointer;
 `;
 
@@ -108,12 +108,16 @@ const LibZone = () => {
 
       return (
         <Library key={index} onClick={() => removeLibrary(elem.name)}>
-          {options.libraryIcon && elem.fullPath ? (
-            <Icon src={elem.fullPath} />
+          {options.libraryIcon ? (
+            elem.fullPath ? (
+              <Icon src={elem.fullPath} />
+            ) : (
+              <NoProfile color={elem.color} textColor={textColor}>
+                {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
+              </NoProfile>
+            )
           ) : (
-            <NoProfile color={elem.color} textColor={textColor}>
-              {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
-            </NoProfile>
+            <></>
           )}
           {options.libraryName && (
             <Text>

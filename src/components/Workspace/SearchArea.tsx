@@ -6,9 +6,7 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import useWorkspace from "./Workspace.hooks";
 import SVG from "ui/svg/SVG";
-import firebase from "firebase/app";
-
-import "firebase/storage";
+import { storageRef } from "firebaseEnv";
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +27,7 @@ const Searchbar = styled.input`
   border-radius: 30px;
   &:focus {
     outline: none;
-    border-color: ${theme.variant};
+    border-color: ${theme.primary};
     border-radius: 30px;
   }
   &[data-have="true"] {
@@ -53,7 +51,7 @@ const SearchResult = styled.div`
   max-height: 400px;
   top: 50px;
   background-color: white;
-  border: solid 1px ${theme.variant};
+  border: solid 1px ${theme.primary};
   border-top: 0;
   overflow: auto;
   z-index: 10;
@@ -93,7 +91,6 @@ const SearchArea = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLInputElement>(null);
   const addLibrary = useWorkspace((s) => s.addLibrary);
-  const storageRef = firebase.storage().ref();
 
   const clickPackage = async (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -130,7 +127,6 @@ const SearchArea = () => {
           },
         })
         .then(({ data }) => {
-          console.log(data);
           setSearchResults(data.items);
           if (data.items.length === 0) setIsOpenResult(false);
           else setIsOpenResult(true);
