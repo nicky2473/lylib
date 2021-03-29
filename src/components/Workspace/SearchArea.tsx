@@ -6,6 +6,7 @@ import axios from "axios";
 import debounce from "lodash/debounce";
 import useWorkspace from "./Workspace.hooks";
 import SVG from "ui/svg/SVG";
+import { storageRef } from "firebaseEnv";
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +16,6 @@ const Contents = styled.div`
   display: flex;
   position: relative;
   flex: 1 0 auto;
-  margin-right: 40px;
 `;
 
 const Searchbar = styled.input`
@@ -67,21 +67,6 @@ const RemoveIcon = styled.div`
   cursor: pointer;
 `;
 
-const OptionIcon = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: transform ease 1.5s, color ease 1s;
-  cursor: pointer;
-
-  &[data-visible="true"] {
-    color: ${theme.primary};
-    transform: translateY(-50%) rotate(45deg);
-  }
-`;
-
 const Package = styled.div`
   padding: 10px;
   cursor: pointer;
@@ -106,13 +91,23 @@ const SearchArea = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLInputElement>(null);
   const addLibrary = useWorkspace((s) => s.addLibrary);
-  const optionVisible = useWorkspace((s) => s.optionVisible);
-  const toggleOptionVisible = useWorkspace((s) => s.toggleOptionVisible);
 
-  const clickPackage = (name: string) => {
+  const clickPackage = async (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    const filename = name.replace("/", "-");
+    const imageRef = storageRef.child(`logos/${filename}.png`);
 
-    addLibrary({ name, color });
+    let fullPath = "";
+    await imageRef
+      .getDownloadURL()
+      .then((url) => {
+        fullPath = url;
+      })
+      .catch(() => {
+        fullPath = "";
+      });
+
+    addLibrary({ name, color, fullPath });
   };
 
   const clickRemoveIcon = () => {
@@ -132,7 +127,6 @@ const SearchArea = () => {
           },
         })
         .then(({ data }) => {
-          console.log(data);
           setSearchResults(data.items);
           if (data.items.length === 0) setIsOpenResult(false);
           else setIsOpenResult(true);
@@ -195,9 +189,6 @@ const SearchArea = () => {
           <SearchResult ref={searchResultsRef}>{renderResults()}</SearchResult>
         )}
       </Contents>
-      <OptionIcon onClick={toggleOptionVisible} data-visible={optionVisible}>
-        <SVG filename="common/option" />
-      </OptionIcon>
     </Container>
   );
 };

@@ -1,12 +1,8 @@
 import styled from "@emotion/styled";
-import Workspace from "components/Workspace/Workspace";
-import { useRef } from "react";
 import Button from "ui/Button";
 import theme from "ui/theme";
-import useMeasure from "react-use-measure";
-import mergeRefs from "react-merge-refs";
 import Header from "components/common/Header";
-import SVG from "ui/svg/SVG";
+import Link from "next/link";
 
 const Container = styled.div`
   height: 100vh;
@@ -42,41 +38,11 @@ const Description = styled.div`
   margin-bottom: 40px;
 `;
 
-const ScrollButton = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  right: 30px;
-  bottom: 30px;
-  border-radius: 100%;
-  background-color: ${theme.primary};
-  cursor: pointer;
-`;
-
 const Home = () => {
-  const workspaceRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [measureRef, bounds] = useMeasure({ scroll: true });
-
-  const clickButtonToWorkspace = () => {
-    if (!workspaceRef.current) return;
-
-    workspaceRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const clickButtonToTop = () => {
-    if (!containerRef.current) return;
-
-    containerRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <>
-      <Header clickTitle={clickButtonToTop} />
-      <Container ref={mergeRefs([measureRef, containerRef])}>
+      <Header />
+      <Container>
         <Contents>
           <Title>
             <span>L</span>ist <span>Y</span>our <span>LIB</span>raries
@@ -84,24 +50,16 @@ const Home = () => {
           <Description>
             Search used libraries in your project, List, and Export
           </Description>
-          <a
-            style={{ textDecoration: "none" }}
-            onClick={clickButtonToWorkspace}
-          >
-            <Button>
-              <div style={{ fontSize: "20px", fontWeight: "bold" }}>
-                Let's go make it!
-              </div>
-            </Button>
-          </a>
+          <Link href="/workspace">
+            <a style={{ textDecoration: "none" }}>
+              <Button>
+                <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+                  Go to workspace
+                </div>
+              </Button>
+            </a>
+          </Link>
         </Contents>
-        <div id="scroll-pin-workspace" ref={workspaceRef} />
-        <Workspace />
-        {bounds.top < 0 && (
-          <ScrollButton onClick={clickButtonToTop}>
-            <SVG filename="common/arrow-thin-up" width="15px" />
-          </ScrollButton>
-        )}
       </Container>
     </>
   );

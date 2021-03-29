@@ -12,6 +12,7 @@
     "@emotion/react": "^11.1.1",
     "@emotion/styled": "^11.0.0",
     "axios": "^0.21.0",
+    "firebase": "^8.3.1",
     "html2canvas": "^1.0.0-rc.7",
     "immer": "^8.0.0",
     "lodash": "^4.17.20",
@@ -21,6 +22,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-merge-refs": "^1.1.0",
+    "react-spinners": "^0.10.6",
     "react-use-measure": "^2.0.3",
     "swr": "^0.3.9",
     "zustand": "^3.2.0"

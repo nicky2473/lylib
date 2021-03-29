@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { forwardRef } from "react";
+import Header from "components/common/Header";
 import LibZone from "./LibZone";
 import Options from "./Options";
 import SearchArea from "./SearchArea";
@@ -9,7 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
+  height: 100vh;
   padding: 100px;
 
   & > div {
@@ -19,12 +19,15 @@ const Container = styled.div`
 
 const Workspace = () => {
   return (
-    <Container>
-      <SearchArea />
-      <Options />
-      <LibZone />
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <SearchArea />
+        <Options />
+        <LibZone />
+      </Container>
+    </>
   );
 };
 
-export default forwardRef(Workspace);
+export default Workspace;

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import styled from "@emotion/styled";
-import { FC } from "react";
 
 const Container = styled.div`
   position: fixed;
@@ -19,14 +18,12 @@ const Title = styled.div`
   cursor: pointer;
 `;
 
-interface Props {
-  clickTitle: () => void;
-}
-
-const Header: FC<Props> = ({ clickTitle }) => {
+const Header = () => {
   return (
     <Container>
-      <Title onClick={clickTitle}>LYLIB</Title>
+      <Link href="/">
+        <Title>LYLIB</Title>
+      </Link>
       <Link href="https://github.com/Junho-Cho/lylib" passHref>
         <a target="_blank">
           <img src="/icon_github.png" />
