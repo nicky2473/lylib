@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import colors from "ui/theme";
 import axios from "axios";
 // @ts-ignore
@@ -25,6 +25,8 @@ const Searchbar = styled.input`
   padding: 0 60px;
   border: solid 1px gray;
   border-radius: 30px;
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
+
   &:focus {
     outline: none;
     border-color: ${colors.primary.original};
@@ -55,6 +57,7 @@ const SearchResult = styled.div`
   border-top: 0;
   overflow: auto;
   z-index: 10;
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
 `;
 
 const RemoveIcon = styled.div`
@@ -71,7 +74,7 @@ const Package = styled.div`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background-color: rgba(249, 167, 38, 0.7);
+    background-color: rgba(253, 193, 81, 0.7);
   }
   & > div:first-of-type {
     font-size: 20px;
@@ -117,36 +120,36 @@ const SearchArea = () => {
     setSearchResults([]);
   };
 
-  const debounced = useCallback(
-    debounce(async (value: string) => {
-      // https://docs.github.com/en/free-pro-team@latest/rest/reference/search
-      await axios
-        .get("https://api.github.com/search/repositories", {
-          params: {
-            q: value,
-          },
-        })
-        .then(({ data }) => {
-          setSearchResults(data.items);
-          if (data.items.length === 0) setIsOpenResult(false);
-          else setIsOpenResult(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 200),
-    []
-  );
+  const debounced = debounce(async (value: string) => {
+    if (value.length <= 0) {
+      setSearchResults([]);
+      setIsOpenResult(false);
+
+      return;
+    }
+
+    // https://docs.github.com/en/free-pro-team@latest/rest/reference/search
+    console.log("debounced: ", value);
+    await axios
+      .get("https://api.github.com/search/repositories", {
+        params: {
+          q: value,
+        },
+      })
+      .then(({ data }) => {
+        setSearchResults(data.items);
+        if (data.items.length === 0) setIsOpenResult(false);
+        else setIsOpenResult(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, 500);
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    if (value.length <= 0) {
-      setSearchResults([]);
-      setIsOpenResult(false);
-    } else {
-      debounced(value);
-    }
+    debounced(value);
   };
 
   const renderResults = () => {
@@ -176,6 +179,7 @@ const SearchArea = () => {
           ref={ref}
           type="text"
           data-have={isOpenResult}
+          placeholder="Search your library"
           onChange={handleChange}
           onFocus={() => {
             if (searchResults.length > 0) setIsOpenResult(true);

@@ -2,7 +2,7 @@ import Link from "next/link";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;

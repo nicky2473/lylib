@@ -37,7 +37,7 @@ const Button = styled.div`
   }
 `;
 
-const Box = styled.span<{ width }>`
+const Underline = styled.span<{ width }>`
   :before {
     content: "";
     position: absolute;
@@ -55,13 +55,13 @@ const Home = () => {
       <Contents>
         <Title>
           <div>
-            <Box width={70}>L</Box>IST
+            <Underline width={70}>L</Underline>IST
           </div>
           <div>
-            <Box width={70}>Y</Box>OUR
+            <Underline width={70}>Y</Underline>OUR
           </div>
           <div>
-            <Box width={175}>LIB</Box>RARIES
+            <Underline width={175}>LIB</Underline>RARIES
           </div>
         </Title>
         <Link href="/workspace">

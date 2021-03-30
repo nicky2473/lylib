@@ -12,6 +12,8 @@ const Container = styled.div`
   border-radius: 10px;
   padding: 20px;
   overflow: auto;
+  background-color: white;
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
 `;
 
 const DownloadArea = styled.div`
@@ -40,7 +42,7 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${colors.primary.original};
+  background-color: ${colors.variant.original};
   cursor: pointer;
 `;
 
@@ -91,9 +93,11 @@ const LibZone = () => {
   const downloadPng = () => {
     if (!downloadRef.current) return;
 
-    html2canvas(downloadRef.current).then((canvas) => {
-      saveAs(canvas.toDataURL(), "lylib.png");
-    });
+    html2canvas(downloadRef.current, { allowTaint: true, useCORS: true }).then(
+      (canvas) => {
+        saveAs(canvas.toDataURL(), "lylib.png");
+      }
+    );
   };
 
   const renderLibraries = () => {

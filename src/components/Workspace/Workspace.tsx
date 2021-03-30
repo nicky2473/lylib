@@ -7,24 +7,27 @@ import SearchArea from "./SearchArea";
 const Container = styled.div`
   position: relative;
   display: flex;
+  gap: 50px;
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  padding: 100px;
-  background-color: ${colors.primary.original};
-
-  & > div {
-    margin: 10px 0;
-  }
+  padding: 100px 100px 50px 100px;
+  background: linear-gradient(
+    135deg,
+    ${colors.primary.original} 70%,
+    white 70% 100%
+  );
 `;
 
 const Workspace = () => {
   return (
-    <Container>
-      <SearchArea />
-      <Options />
-      <LibZone />
-    </Container>
+    <>
+      <Container>
+        <Options />
+        <SearchArea />
+        <LibZone />
+      </Container>
+    </>
   );
 };
 
