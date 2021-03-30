@@ -11,7 +11,7 @@ const Contents = styled.div`
   }
 
   > input[type="checkbox"] + label {
-    padding-left: 30px;
+    padding-left: 25px;
   }
 
   > input[type="checkbox"] + label:before {

@@ -73,9 +73,7 @@ const RemoveIcon = styled.div`
 const Package = styled.div`
   padding: 10px;
   cursor: pointer;
-  &:hover {
-    background-color: rgba(253, 193, 81, 0.7);
-  }
+
   & > div:first-of-type {
     font-size: 20px;
   }
@@ -85,6 +83,9 @@ const Package = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     color: gray;
+  }
+  &:hover {
+    background-color: rgba(253, 193, 81, 0.7);
   }
 `;
 

@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import SVG from "ui/svg/SVG";
-import colors from "ui/theme";
 import useWorkspace from "../Workspace.hooks";
-import html2canvas from "html2canvas";
 import { useRef } from "react";
+import SVG from "ui/svg/SVG";
+import CircleButton from "ui/CircleButton";
+import html2canvas from "html2canvas";
 
 const Container = styled.div`
   flex: 1 0 auto;
@@ -26,20 +26,6 @@ const Library = styled.div`
   padding: 20px;
 `;
 
-const ExportButton = styled.div`
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 80px;
-  right: 30px;
-  bottom: 30px;
-  border-radius: 100%;
-  background-color: ${colors.variant.original};
-  cursor: pointer;
-`;
-
 const Icon = styled.img`
   height: 100px;
   margin-right: 20px;
@@ -60,6 +46,14 @@ const NoProfile = styled.div<{ color: string; textColor: string }>`
 
 const Text = styled.div`
   font-size: 30px;
+`;
+
+const ExportButton = styled(CircleButton)`
+  display: flex;
+  position: absolute;
+  gap: 20px;
+  right: 30px;
+  bottom: 30px;
 `;
 
 const Results = () => {

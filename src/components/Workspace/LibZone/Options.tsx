@@ -37,7 +37,7 @@ const Options = () => {
           id="libOwnerVisibility"
           onChange={() => toggleOption("libraryOwner")}
         >
-          <span>Owner</span>
+          <span>Name with Owner</span>
         </Checkbox>
         <Checkbox
           id="libIconVisibility"
