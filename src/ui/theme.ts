@@ -1,4 +1,12 @@
-const primary = "#F29F05";
-const variant = "#039686";
+const colors = {
+  primary: {
+    original: "#F29F05",
+    light: "#ffd049",
+    dark: "#ba7100",
+  },
+  variant: {
+    original: "#9a4435",
+  },
+} as const;
 
-export default { primary, variant };
+export default colors;

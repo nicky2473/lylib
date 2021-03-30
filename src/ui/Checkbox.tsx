@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { DetailedHTMLProps, FC, InputHTMLAttributes } from "react";
-import theme from "./theme";
 
 const Container = styled.div`
   position: relative;
@@ -20,7 +19,7 @@ const Contents = styled.div`
     width: 15px;
     height: 15px;
     border-radius: 2px;
-    border: solid 1.5px ${theme.primary};
+    border: solid 1.5px black;
     background-color: white;
     position: absolute;
     left: 0;
@@ -33,13 +32,12 @@ const Contents = styled.div`
     justify-content: center;
     font-size: 12px;
     color: white;
-    background-color: ${theme.primary};
+    background-color: black;
   }
 `;
 
 const Label = styled.label`
   display: flex;
-  justify-content: center;
   align-items: center;
 `;
 

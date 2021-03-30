@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, useCallback, useRef, useState } from "react";
-import theme from "ui/theme";
+import { ChangeEvent, useRef, useState } from "react";
+import colors from "ui/theme";
 import axios from "axios";
 // @ts-ignore
 import debounce from "lodash/debounce";
 import useWorkspace from "./Workspace.hooks";
 import SVG from "ui/svg/SVG";
+import { storageRef } from "firebaseEnv";
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +16,6 @@ const Contents = styled.div`
   display: flex;
   position: relative;
   flex: 1 0 auto;
-  margin-right: 40px;
 `;
 
 const Searchbar = styled.input`
@@ -25,9 +25,11 @@ const Searchbar = styled.input`
   padding: 0 60px;
   border: solid 1px gray;
   border-radius: 30px;
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
+
   &:focus {
     outline: none;
-    border-color: ${theme.primary};
+    border-color: ${colors.primary.original};
     border-radius: 30px;
   }
   &[data-have="true"] {
@@ -51,10 +53,11 @@ const SearchResult = styled.div`
   max-height: 400px;
   top: 50px;
   background-color: white;
-  border: solid 1px ${theme.primary};
+  border: solid 1px ${colors.primary.original};
   border-top: 0;
   overflow: auto;
   z-index: 10;
+  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
 `;
 
 const RemoveIcon = styled.div`
@@ -67,26 +70,11 @@ const RemoveIcon = styled.div`
   cursor: pointer;
 `;
 
-const OptionIcon = styled.div`
-  position: relative;
-  width: 40px;
-  height: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: transform ease 1.5s, color ease 1s;
-  cursor: pointer;
-
-  &[data-visible="true"] {
-    color: ${theme.primary};
-    transform: translateY(-50%) rotate(45deg);
-  }
-`;
-
 const Package = styled.div`
   padding: 10px;
   cursor: pointer;
   &:hover {
-    background-color: rgba(249, 167, 38, 0.7);
+    background-color: rgba(253, 193, 81, 0.7);
   }
   & > div:first-of-type {
     font-size: 20px;
@@ -106,13 +94,23 @@ const SearchArea = () => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLInputElement>(null);
   const addLibrary = useWorkspace((s) => s.addLibrary);
-  const optionVisible = useWorkspace((s) => s.optionVisible);
-  const toggleOptionVisible = useWorkspace((s) => s.toggleOptionVisible);
 
-  const clickPackage = (name: string) => {
+  const clickPackage = async (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    const filename = name.replace("/", "-");
+    const imageRef = storageRef.child(`logos/${filename}.png`);
 
-    addLibrary({ name, color });
+    let fullPath = "";
+    await imageRef
+      .getDownloadURL()
+      .then((url) => {
+        fullPath = url;
+      })
+      .catch(() => {
+        fullPath = "";
+      });
+
+    addLibrary({ name, color, fullPath });
   };
 
   const clickRemoveIcon = () => {
@@ -122,37 +120,36 @@ const SearchArea = () => {
     setSearchResults([]);
   };
 
-  const debounced = useCallback(
-    debounce(async (value: string) => {
-      // https://docs.github.com/en/free-pro-team@latest/rest/reference/search
-      await axios
-        .get("https://api.github.com/search/repositories", {
-          params: {
-            q: value,
-          },
-        })
-        .then(({ data }) => {
-          console.log(data);
-          setSearchResults(data.items);
-          if (data.items.length === 0) setIsOpenResult(false);
-          else setIsOpenResult(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, 200),
-    []
-  );
+  const debounced = debounce(async (value: string) => {
+    if (value.length <= 0) {
+      setSearchResults([]);
+      setIsOpenResult(false);
+
+      return;
+    }
+
+    // https://docs.github.com/en/free-pro-team@latest/rest/reference/search
+    console.log("debounced: ", value);
+    await axios
+      .get("https://api.github.com/search/repositories", {
+        params: {
+          q: value,
+        },
+      })
+      .then(({ data }) => {
+        setSearchResults(data.items);
+        if (data.items.length === 0) setIsOpenResult(false);
+        else setIsOpenResult(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, 500);
 
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    if (value.length <= 0) {
-      setSearchResults([]);
-      setIsOpenResult(false);
-    } else {
-      debounced(value);
-    }
+    debounced(value);
   };
 
   const renderResults = () => {
@@ -182,6 +179,7 @@ const SearchArea = () => {
           ref={ref}
           type="text"
           data-have={isOpenResult}
+          placeholder="Search your library"
           onChange={handleChange}
           onFocus={() => {
             if (searchResults.length > 0) setIsOpenResult(true);
@@ -195,9 +193,6 @@ const SearchArea = () => {
           <SearchResult ref={searchResultsRef}>{renderResults()}</SearchResult>
         )}
       </Contents>
-      <OptionIcon onClick={toggleOptionVisible} data-visible={optionVisible}>
-        <SVG filename="common/option" />
-      </OptionIcon>
     </Container>
   );
 };

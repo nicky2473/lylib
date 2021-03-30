@@ -1,17 +1,13 @@
 import styled from "@emotion/styled";
 import SVG from "ui/svg/SVG";
-import theme from "ui/theme";
-import useWorkspace from "./Workspace.hooks";
+import colors from "ui/theme";
+import useWorkspace from "../Workspace.hooks";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 
 const Container = styled.div`
-  position: relative;
   flex: 1 0 auto;
-  border: solid 1px gray;
-  border-radius: 10px;
   padding: 20px;
-  overflow: auto;
 `;
 
 const DownloadArea = styled.div`
@@ -28,10 +24,6 @@ const Library = styled.div`
   align-items: center;
   cursor: pointer;
   padding: 20px;
-
-  & > div:nth-of-type(1) {
-    margin-right: 20px;
-  }
 `;
 
 const ExportButton = styled.div`
@@ -44,16 +36,22 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${theme.variant};
+  background-color: ${colors.variant.original};
   cursor: pointer;
+`;
+
+const Icon = styled.img`
+  height: 60px;
+  margin-right: 20px;
 `;
 
 const NoProfile = styled.div<{ color: string; textColor: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
   border-radius: 100%;
   background-color: ${(props) => props.color};
   color: ${(props) => props.textColor};
@@ -64,7 +62,7 @@ const Text = styled.div`
   font-size: 30px;
 `;
 
-const LibZone = () => {
+const Results = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
   const options = useWorkspace((s) => s.options);
@@ -89,9 +87,11 @@ const LibZone = () => {
   const downloadPng = () => {
     if (!downloadRef.current) return;
 
-    html2canvas(downloadRef.current).then((canvas) => {
-      saveAs(canvas.toDataURL(), "lylib.png");
-    });
+    html2canvas(downloadRef.current, { allowTaint: true, useCORS: true }).then(
+      (canvas) => {
+        saveAs(canvas.toDataURL(), "lylib.png");
+      }
+    );
   };
 
   const renderLibraries = () => {
@@ -104,20 +104,18 @@ const LibZone = () => {
       const textColor =
         r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "black" : "white";
 
-      const filename = elem.name.replace("/", "-");
-
       return (
         <Library key={index} onClick={() => removeLibrary(elem.name)}>
-          {/* <Logo
-            src={`libicons/${filename}.png`}
-            onError={(e) => {
-              e.target.style.display = "none";
-            }}
-          /> */}
-          {options.libraryIcon && (
-            <NoProfile color={elem.color} textColor={textColor}>
-              {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
-            </NoProfile>
+          {options.libraryIcon ? (
+            elem.fullPath ? (
+              <Icon src={elem.fullPath} />
+            ) : (
+              <NoProfile color={elem.color} textColor={textColor}>
+                {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
+              </NoProfile>
+            )
+          ) : (
+            <></>
           )}
           {options.libraryName && (
             <Text>
@@ -141,4 +139,4 @@ const LibZone = () => {
   );
 };
 
-export default LibZone;
+export default Results;
