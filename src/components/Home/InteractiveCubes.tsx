@@ -37,7 +37,7 @@ const InteractiveCubes = () => {
           .toArray(array, i * 3);
 
       return array;
-    }, []);
+    }, [isAuto]);
 
     useFrame(() => {
       if (!isAuto) return;

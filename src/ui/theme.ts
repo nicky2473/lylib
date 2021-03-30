@@ -4,8 +4,8 @@ const colors = {
     light: "#ffd049",
     dark: "#ba7100",
   },
-  accent: {
-    original: "#774F38",
+  variant: {
+    original: "#9a4435",
   },
 } as const;
 

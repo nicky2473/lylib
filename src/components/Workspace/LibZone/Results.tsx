@@ -1,17 +1,13 @@
 import styled from "@emotion/styled";
 import SVG from "ui/svg/SVG";
 import colors from "ui/theme";
-import useWorkspace from "./Workspace.hooks";
+import useWorkspace from "../Workspace.hooks";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 
 const Container = styled.div`
-  position: relative;
   flex: 1 0 auto;
-  border: solid 1px gray;
-  border-radius: 10px;
   padding: 20px;
-  overflow: auto;
 `;
 
 const DownloadArea = styled.div`
@@ -40,7 +36,7 @@ const ExportButton = styled.div`
   right: 30px;
   bottom: 30px;
   border-radius: 100%;
-  background-color: ${colors.primary.original};
+  background-color: ${colors.variant.original};
   cursor: pointer;
 `;
 
@@ -66,7 +62,7 @@ const Text = styled.div`
   font-size: 30px;
 `;
 
-const LibZone = () => {
+const Results = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
   const options = useWorkspace((s) => s.options);
@@ -91,9 +87,11 @@ const LibZone = () => {
   const downloadPng = () => {
     if (!downloadRef.current) return;
 
-    html2canvas(downloadRef.current).then((canvas) => {
-      saveAs(canvas.toDataURL(), "lylib.png");
-    });
+    html2canvas(downloadRef.current, { allowTaint: true, useCORS: true }).then(
+      (canvas) => {
+        saveAs(canvas.toDataURL(), "lylib.png");
+      }
+    );
   };
 
   const renderLibraries = () => {
@@ -141,4 +139,4 @@ const LibZone = () => {
   );
 };
 
-export default LibZone;
+export default Results;
