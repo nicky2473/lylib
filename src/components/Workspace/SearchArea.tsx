@@ -98,8 +98,7 @@ const SearchArea = () => {
 
   const clickPackage = async (name: string) => {
     const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    const filename = name.replace("/", "-");
-    const imageRef = storageRef.child(`logos/${filename}.png`);
+    const imageRef = storageRef.child(`logos/${name}.png`);
 
     let fullPath = "";
     await imageRef
