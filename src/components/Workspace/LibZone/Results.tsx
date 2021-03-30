@@ -41,7 +41,7 @@ const ExportButton = styled.div`
 `;
 
 const Icon = styled.img`
-  height: 60px;
+  height: 100px;
   margin-right: 20px;
 `;
 
