@@ -1,19 +1,13 @@
 import styled from "@emotion/styled";
 import SVG from "ui/svg/SVG";
 import colors from "ui/theme";
-import useWorkspace from "./Workspace.hooks";
+import useWorkspace from "../Workspace.hooks";
 import html2canvas from "html2canvas";
 import { useRef } from "react";
 
 const Container = styled.div`
-  position: relative;
   flex: 1 0 auto;
-  border: solid 1px gray;
-  border-radius: 10px;
   padding: 20px;
-  overflow: auto;
-  background-color: white;
-  box-shadow: 0 5px 12px 0 rgba(0, 0, 0, 0.5);
 `;
 
 const DownloadArea = styled.div`
@@ -68,7 +62,7 @@ const Text = styled.div`
   font-size: 30px;
 `;
 
-const LibZone = () => {
+const Results = () => {
   const selectedLibraries = useWorkspace((s) => s.selectedLibraries);
   const removeLibrary = useWorkspace((s) => s.removeLibrary);
   const options = useWorkspace((s) => s.options);
@@ -145,4 +139,4 @@ const LibZone = () => {
   );
 };
 
-export default LibZone;
+export default Results;

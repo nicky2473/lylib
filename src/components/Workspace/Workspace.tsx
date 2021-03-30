@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import colors from "ui/theme";
-import LibZone from "./LibZone";
-import Options from "./Options";
+import LibZone from "./LibZone/LibZone";
 import SearchArea from "./SearchArea";
 
 const Container = styled.div`
@@ -21,13 +20,10 @@ const Container = styled.div`
 
 const Workspace = () => {
   return (
-    <>
-      <Container>
-        <Options />
-        <SearchArea />
-        <LibZone />
-      </Container>
-    </>
+    <Container>
+      <SearchArea />
+      <LibZone />
+    </Container>
   );
 };
 
