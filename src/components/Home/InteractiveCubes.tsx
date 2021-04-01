@@ -18,6 +18,7 @@ const InteractiveCubes = () => {
   };
 
   const Cubes = () => {
+    const [shakeColors, reset] = useState<boolean>(false);
     const [hover, setHover] = useState<number>();
     const [isAuto, setIsAuto] = useState<boolean>(true);
     const [isDropMode, setIsDropMode] = useState<boolean>(true);
@@ -30,14 +31,16 @@ const InteractiveCubes = () => {
     const colors = useMemo(() => {
       const array = new Float32Array(200 * 3);
       const color = new Color();
+      const colorSet = niceColors[Math.floor(Math.random() * 100)];
+
       for (let i = 0; i < 200; i += 1)
         color
-          .set(niceColors[4][Math.floor(Math.random() * 5)])
+          .set(colorSet[Math.floor(Math.random() * 5)])
           .convertSRGBToLinear()
           .toArray(array, i * 3);
 
       return array;
-    }, [isAuto]);
+    }, [shakeColors]);
 
     useFrame(() => {
       if (!isAuto) return;
@@ -69,6 +72,7 @@ const InteractiveCubes = () => {
                 Math.random()
               );
           }
+          reset((prev) => !prev);
           break;
         case "s":
           setIsDropMode((prev) => !prev);
