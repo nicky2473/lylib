@@ -4,8 +4,6 @@ import { useRef, useState } from "react";
 import CircleButton from "ui/atom/CircleButton";
 import html2canvas from "html2canvas";
 import { toast } from "react-toastify";
-import { popup } from "ui/atom/Popup";
-import ProvidePopup from "ui/components/ProvidePopup";
 
 const Container = styled.div`
   flex: 1 0 auto;
@@ -103,10 +101,6 @@ const Results = () => {
   const updateFullPath = useWorkspace((s) => s.updateFullPath);
   const options = useWorkspace((s) => s.options);
   const downloadRef = useRef<HTMLDivElement>(null);
-
-  const handleClickProvide = () => {
-    popup.open(<ProvidePopup />);
-  };
 
   const handleChangeIcon = (e) => {
     if (e.target.files === null) return;
