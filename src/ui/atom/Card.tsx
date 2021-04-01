@@ -8,10 +8,11 @@ const CardBase = styled.div`
 
 interface Props {
   children: ReactNode;
+  className?: string;
 }
 
-const Card = ({ children }: Props) => {
-  return <CardBase>{children}</CardBase>;
+const Card = ({ children, className }: Props) => {
+  return <CardBase className={className}>{children}</CardBase>;
 };
 
 export default Card;

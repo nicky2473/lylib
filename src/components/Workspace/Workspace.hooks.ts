@@ -7,7 +7,7 @@ interface Library {
   fullPath: string;
 }
 
-type Option = "libraryName" | "libraryOwner" | "libraryIcon";
+type Option = "libraryName" | "libraryOwner";
 
 type Store = {
   selectedLibraries: Library[];
@@ -25,7 +25,6 @@ const useWorkspace = create<Store>((set, get) => ({
   options: {
     libraryName: true,
     libraryOwner: false,
-    libraryIcon: true,
   },
   addLibrary: (library) =>
     set((state) =>

@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         rtl={false}
         pauseOnFocusLoss
         pauseOnHover
+        style={{ zIndex: 1000 }}
       />
       <Container>
         <Head>

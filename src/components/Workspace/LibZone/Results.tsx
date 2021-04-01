@@ -28,11 +28,23 @@ const Library = styled.div`
   gap: 20px;
 `;
 
-const DeleteIcon = styled.svg`
+const Options = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  cursor: pointer;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  > svg {
+    color: lightgray;
+
+    :hover {
+      color: black;
+    }
+  }
 `;
 
 const ChangeIcon = styled.div`
@@ -155,49 +167,69 @@ const Results = () => {
           onPointerLeave={() => setHovering("")}
         >
           {hovering === elem.name && (
-            <DeleteIcon
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="lightgray"
-              width="20px"
-              onClick={() => removeLibrary(elem.name)}
-            >
-              <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z" />
-            </DeleteIcon>
+            <Options>
+              {/* 기여 이메일 전송 버튼은 스펙에서 우선 제외 */}
+              {/* <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 100 100"
+                width="30px"
+                cursor="pointer"
+                onClick={handleClickProvide}
+              >
+                <switch>
+                  <g>
+                    <path d="M5273.1 2400.1v-2c0-2.8-5-4-9.7-4s-9.7 1.3-9.7 4v2c0 1.8.7 3.6 2 4.9l5 4.9c.3.3.4.6.4 1v6.4c0 .4.2.7.6.8l2.9.9c.5.1 1-.2 1-.8v-7.2c0-.4.2-.7.4-1l5.1-5c1.3-1.3 2-3.1 2-4.9zm-9.7-.1c-4.8 0-7.4-1.3-7.5-1.8.1-.5 2.7-1.8 7.5-1.8s7.3 1.3 7.5 1.8c-.2.5-2.7 1.8-7.5 1.8z" />
+                    <path d="M5268.4 2410.3c-.6 0-1 .4-1 1s.4 1 1 1h4.3c.6 0 1-.4 1-1s-.4-1-1-1h-4.3zM5272.7 2413.7h-4.3c-.6 0-1 .4-1 1s.4 1 1 1h4.3c.6 0 1-.4 1-1s-.4-1-1-1zM5272.7 2417h-4.3c-.6 0-1 .4-1 1s.4 1 1 1h4.3c.6 0 1-.4 1-1 0-.5-.4-1-1-1z" />
+                    <g>
+                      <path d="M63 36.8c0-5.3 4.4-9.7 9.7-9.7h13.6l-4.7 4.5c-1.3 1.2-1.3 3.2-.1 4.5.6.6 1.4 1 2.3 1 .8 0 1.6-.3 2.2-.9l10-9.7c1.3-1.2 1.3-3.2.1-4.5l-9.7-10.1c-1.2-1.3-3.2-1.3-4.5-.1s-1.3 3.2-.1 4.5l4.3 4.5H72.7c-8.8 0-16 7.2-16 16v7.8l6.3 1.1v-8.9zM96.6 55.9c-1.1-1.5-3-2.3-4.8-2l-15.4 2.6c0 .4-.1.7-.1 1.1-.8 4.1-4.3 7.2-8.5 7.5l-1 .1c-5.5.4-11.2.3-16.7-.3l-4.5-.5c-1.4-.1-2.4-1.4-2.3-2.8.1-1.4 1.3-2.4 2.8-2.3l4.5.5c5.2.5 10.6.6 15.8.3l1-.1c1.9-.1 3.5-1.5 3.9-3.4.2-1.1 0-2.3-.7-3.2-.6-.9-1.6-1.6-2.7-1.8l-23.5-4.1c-2.6-.5-5.3 0-7.7 1.2L14.8 60.2 33 78.4l19.6 4.7c3.4.8 7 .3 10.1-1.5L95 63c1.2-.7 2.1-1.8 2.4-3.2.3-1.4 0-2.7-.8-3.9zM3.1 71c-.4.4-.6.9-.6 1.5s.2 1.1.6 1.5l14.4 14.4c.8.8 2.2.8 3 0l7.7-7.7-17.4-17.4L3.1 71z" />
+                    </g>
+                  </g>
+                </switch>
+              </svg> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                width="20px"
+                cursor="pointer"
+                onClick={() => removeLibrary(elem.name)}
+              >
+                <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z" />
+              </svg>
+            </Options>
           )}
-          {options.libraryIcon && (
-            <LibraryIcon>
-              {elem.fullPath ? (
-                <img src={elem.fullPath} height={100} />
-              ) : (
-                <NoProfile color={elem.color} textColor={textColor}>
-                  {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
-                </NoProfile>
-              )}
-              <input
-                type="file"
-                id={elem.name}
-                name={elem.name}
-                accept=".png, .jpg, .jpeg, .svg, .bmp"
-                onChange={handleChangeIcon}
-                style={{ display: "none" }}
-              />
-              {hovering === elem.name && (
-                <ChangeIcon>
-                  <label htmlFor={elem.name}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="black"
-                      width="20px"
-                    >
-                      <path d="M14.66 15.66A8 8 0 1117 10h-2a6 6 0 10-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z" />
-                    </svg>
-                  </label>
-                </ChangeIcon>
-              )}
-            </LibraryIcon>
-          )}
+          <LibraryIcon>
+            {elem.fullPath ? (
+              <img src={elem.fullPath} height={100} />
+            ) : (
+              <NoProfile color={elem.color} textColor={textColor}>
+                {elem.name.split("/")[1].slice(0, 1).toUpperCase()}
+              </NoProfile>
+            )}
+            <input
+              type="file"
+              id={elem.name}
+              name={elem.name}
+              accept=".png, .jpg, .jpeg, .svg, .bmp"
+              onChange={handleChangeIcon}
+              style={{ display: "none" }}
+            />
+            {hovering === elem.name && (
+              <ChangeIcon>
+                <label htmlFor={elem.name}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="black"
+                    width="20px"
+                  >
+                    <path d="M14.66 15.66A8 8 0 1117 10h-2a6 6 0 10-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z" />
+                  </svg>
+                </label>
+              </ChangeIcon>
+            )}
+          </LibraryIcon>
           {options.libraryName && (
             <Text>
               {options.libraryOwner ? elem.name : elem.name.split("/")[1]}

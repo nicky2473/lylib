@@ -96,7 +96,9 @@ const SearchArea = () => {
   const addLibrary = useWorkspace((s) => s.addLibrary);
 
   const clickPackage = async (name: string) => {
-    const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    const color = "#000000".replace(/0/g, () =>
+      (~~(Math.random() * 16)).toString(16)
+    );
     const imageRef = storageRef.child(`logos/${name}.png`);
 
     let fullPath = "";
