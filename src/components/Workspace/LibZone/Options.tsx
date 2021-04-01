@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Checkbox from "ui/Checkbox";
+import Checkbox from "ui/atom/Checkbox";
 import useWorkspace from "../Workspace.hooks";
 
 const Container = styled.div`
@@ -37,14 +37,7 @@ const Options = () => {
           id="libOwnerVisibility"
           onChange={() => toggleOption("libraryOwner")}
         >
-          <span>Owner</span>
-        </Checkbox>
-        <Checkbox
-          id="libIconVisibility"
-          defaultChecked
-          onChange={() => toggleOption("libraryIcon")}
-        >
-          <span>Icon</span>
+          <span>Name with Owner</span>
         </Checkbox>
       </Contents>
     </Container>
