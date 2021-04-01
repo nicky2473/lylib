@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { DetailedHTMLProps, FC, HTMLAttributes } from "react";
-import colors from "./theme";
+import colors from "../theme";
 
 const Button = styled.div`
   display: flex;

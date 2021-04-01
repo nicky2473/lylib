@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import Checkbox from "ui/Checkbox";
+import Checkbox from "ui/atom/Checkbox";
 import useWorkspace from "../Workspace.hooks";
 
 const Container = styled.div`

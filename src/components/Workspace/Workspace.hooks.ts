@@ -17,6 +17,7 @@ type Store = {
   addLibrary: (library: Library) => void;
   removeLibrary: (name: string) => void;
   toggleOption: (target: Option) => void;
+  updateFullPath: (name: string, fullpath: string) => void;
 };
 
 const useWorkspace = create<Store>((set, get) => ({
@@ -46,6 +47,15 @@ const useWorkspace = create<Store>((set, get) => ({
     set((state) =>
       produce(state, (draft) => {
         draft.options[target] = !get().options[target];
+      })
+    ),
+  updateFullPath: (name, fullPath) =>
+    set((state) =>
+      produce(state, (draft) => {
+        const target = draft.selectedLibraries.find(
+          (elem) => elem.name === name
+        );
+        target.fullPath = fullPath;
       })
     ),
 }));
