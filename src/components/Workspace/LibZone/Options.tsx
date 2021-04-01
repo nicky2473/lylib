@@ -39,13 +39,6 @@ const Options = () => {
         >
           <span>Name with Owner</span>
         </Checkbox>
-        <Checkbox
-          id="libIconVisibility"
-          defaultChecked
-          onChange={() => toggleOption("libraryIcon")}
-        >
-          <span>Icon</span>
-        </Checkbox>
       </Contents>
     </Container>
   );
